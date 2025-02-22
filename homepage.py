@@ -3,6 +3,7 @@ from helpers.api import get_competitions, get_seasons, get_teams, get_team_playe
     get_league_physical
 from helpers.helpers import find_element_position
 from helpers.plotting import plot_spv99_table, plot_distance_scatter, plot_radar
+from helpers.utils import authenticate
 
 
 def main():
@@ -70,4 +71,6 @@ def main():
 
 
 if __name__ == "__main__":
-    main()
+    authenticate()
+    if st.session_state['authentication_status']:
+        main()
