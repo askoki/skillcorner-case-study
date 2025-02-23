@@ -2,7 +2,7 @@ from typing import Tuple
 
 import pandas as pd
 import streamlit as st
-
+from PIL import Image
 from streamlit_authenticator import Authenticate
 
 from helpers.api import get_competitions, get_seasons, get_league_physical, get_league_off_ball_runs
@@ -38,7 +38,33 @@ def authenticate():
         st.warning('Please enter your username and password')
 
 
-def sidebar_selections() -> Tuple[pd.DataFrame, list, int, int]:
+def add_page_logo():
+    img = Image.open('skillcorner_logo.jpeg')
+    st.set_page_config(
+        page_title="Skillcorner Case Study",
+        page_icon=img
+    )
+
+def add_sidebar_logo():
+    img = Image.open('skillcorner.png')
+    st.markdown(
+        """
+        <style>
+            [data-testid=stSidebar] [data-testid=stImage]{
+                text-align: center;
+                display: block;
+                margin-left: auto;
+                margin-right: auto;
+                width: 100%;
+            }
+        </style>
+        """, unsafe_allow_html=True
+    )
+    st.sidebar.image(image=img)
+    st.sidebar.title('Skillcorner Case Study')
+
+
+def sidebar_selections() -> Tuple[pd.DataFrame, dict]:
     with st.sidebar:
         competition_df = get_competitions()
         comp_list = competition_df.name.unique()
@@ -59,4 +85,15 @@ def sidebar_selections() -> Tuple[pd.DataFrame, list, int, int]:
         df, metrics = get_league_physical(competition_id=comp_id, season_id=season_id)
     else:
         df, metrics = get_league_off_ball_runs(competition_id=comp_id, season_id=season_id)
-    return df, metrics, comp_id, season_id
+    return_dict = {
+        'metrics': metrics,
+        'competition': {
+            'selected': selected_competition,
+            'id': comp_id,
+        },
+        'season': {
+            'selected': selected_season,
+            'id': season_id,
+        }
+    }
+    return df, return_dict
