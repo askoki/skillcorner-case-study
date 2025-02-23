@@ -24,7 +24,10 @@ def main():
         metric_values = filter_by_suffix(selection_dict['metrics'], select_metric_type)
     else:
         metric_values = selection_dict['metrics']
-    select_metric = st.selectbox('Select metric', metric_values, index=0, key='metric-select')
+    select_metric = st.selectbox(
+        'Select metric', metric_values, index=0,
+        format_func=lambda r: r.replace('_', ' ').capitalize(), key='metric-select'
+    )
 
     top10_df = league_df.sort_values(select_metric, ascending=False).iloc[:10]
     try:
@@ -32,7 +35,7 @@ def main():
     except KeyError:
         top10_df['plot_label'] = top10_df.player_name
     plot_ranking_table(top10_df, metric=select_metric)
-    #---------------------
+    # ---------------------
 
     # x_axis = st.selectbox("Select X-axis", options=selection_dict['metrics'],
     #                       index=find_element_position(selection_dict['metrics'], 'total_distance_per_90'))
@@ -55,7 +58,6 @@ def main():
     #     'psv99': 'Peak Sprint Velocity 99th Percentile'
     # }
     # player_position = league_df.query(f'player_id=={player_id}').squeeze().position_group
-
 
 
 if __name__ == "__main__":
