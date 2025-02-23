@@ -45,7 +45,7 @@ def main():
         'Select Y-axis', options=metric_values, index=find_element_position(list(metric_values), select_metric)+1,
         format_func=format_select_labels, key='y-axis-select'
     )
-    plot_scatter(league_df, team_name=selected_team, x_metric=x_axis, y_metric=y_axis)
+    plot_scatter(league_df, data_point_id='team_name', selected_id=selected_team, x_metric=x_axis, y_metric=y_axis)
     # # -----------------------
     #
     # players_df = get_team_players(competition_id=selection_dict['competition']['id'], season_id=selection_dict['season']['id'], team_id=team_id)
