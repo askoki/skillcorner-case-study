@@ -6,6 +6,7 @@ import streamlit as st
 from requests.auth import HTTPBasicAuth
 from skillcorner.client import SkillcornerClient
 from skillcornerviz.utils import skillcorner_physical_utils as p_utils
+from skillcornerviz.utils import skillcorner_game_intelligence_utils as gi_utils
 from helpers.helpers import urljoin
 from settings import RUNS
 
@@ -100,4 +101,6 @@ def get_league_off_ball_runs(competition_id: int, season_id: int) -> Tuple[pd.Da
                     'pulling_half_space_run,cross_receiver_run'
     })
     df = pd.DataFrame(data)
+    # metrics is empty in this case, workaround with RUNS dict
+    metrics = gi_utils.add_run_normalisations(df)
     return df, RUNS.keys()
