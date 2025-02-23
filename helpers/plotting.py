@@ -5,28 +5,36 @@ from skillcornerviz.standard_plots import radar_plot as radar
 
 from skillcornerviz.standard_plots import bar_plot as bar
 
+from helpers.utils import format_select_labels
+
 
 def plot_ranking_table(df: pd.DataFrame, metric: str):
-    fig, ax = bar.plot_bar_chart(df=df,
-                                 metric=metric,
-                                 label=metric,
-                                 # unit='km/h',
-                                 primary_highlight_group=df.iloc[:3].player_id.values,
-                                 add_bar_values=True,
-                                 data_point_id='player_id',
-                                 data_point_label='plot_label')
+    fig, ax = bar.plot_bar_chart(
+        df=df,
+        metric=metric,
+        label=format_select_labels(metric),
+        # unit='km/h',
+        primary_highlight_group=df.iloc[:3].player_id.values,
+        add_bar_values=True,
+        data_point_id='player_id',
+        data_point_label='plot_label'
+    )
     st.pyplot(fig)
 
 
-def plot_distance_scatter(df: pd.DataFrame, team_name: str, x_metric: str, y_metric: str):
-    fig, ax = scatter.plot_scatter(df=df,
-                                   x_metric=x_metric,
-                                   y_metric=y_metric,
-                                   data_point_id='team_name',
-                                   data_point_label='player_short_name',
-                                   x_unit='m',
-                                   y_unit='m',
-                                   primary_highlight_group=[team_name], )
+def plot_scatter(df: pd.DataFrame, team_name: str, x_metric: str, y_metric: str):
+    fig, ax = scatter.plot_scatter(
+        df=df,
+        x_metric=x_metric,
+        y_metric=y_metric,
+        data_point_id='team_name',
+        data_point_label='player_name',
+        # x_unit='m',
+        # y_unit='m',
+        x_label=format_select_labels(x_metric),
+        y_label=format_select_labels(y_metric),
+        primary_highlight_group=[team_name]
+    )
     st.pyplot(fig)
 
 

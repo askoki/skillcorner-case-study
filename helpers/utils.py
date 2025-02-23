@@ -105,3 +105,6 @@ def sidebar_selections() -> Tuple[pd.DataFrame, dict]:
 def filter_by_suffix(items: list, suffix: str) -> list:
     series = pd.Series(items)
     return series[series.str.endswith(suffix)].tolist()
+
+def format_select_labels(r):
+    return r.replace('_', ' ').capitalize()
