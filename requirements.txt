@@ -65,6 +65,7 @@ six==1.17.0
 skillcorner==2.5.0
 skillcornerviz==1.1.1
 smmap==5.0.2
+st-pages==1.0.1
 streamlit==1.42.2
 streamlit-authenticator==0.4.1
 tenacity==9.0.0
