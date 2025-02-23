@@ -38,7 +38,7 @@ def plot_scatter(df: pd.DataFrame, data_point_id: str, selected_id: int, x_metri
     st.pyplot(fig)
 
 
-def plot_radar(position_df: pd.DataFrame, plot_title: str, player_id: int, metrics: list, metrics_labels: list,
+def plot_radar(position_df: pd.DataFrame, plot_title: str, player_id: int, metrics: list,
                position_label: str, competition_label: str, season_label: str):
     fig, ax = radar.plot_radar(
         df=position_df,
@@ -46,7 +46,6 @@ def plot_radar(position_df: pd.DataFrame, plot_title: str, player_id: int, metri
         label=player_id,
         plot_title=plot_title,
         metrics=metrics,
-        metric_labels=metrics_labels,
         percentiles_precalculated=False,
         positions=position_label,
         matches=8,

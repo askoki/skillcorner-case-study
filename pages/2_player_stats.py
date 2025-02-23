@@ -1,7 +1,7 @@
 import streamlit as st
 from helpers.api import get_teams, get_team_players
 from helpers.helpers import find_element_position
-from helpers.plotting import plot_scatter
+from helpers.plotting import plot_scatter, plot_radar
 from helpers.utils import authenticate, sidebar_selections, add_page_logo, add_sidebar_logo, filter_by_suffix, \
     format_select_labels
 from settings import METRIC_LABELS
@@ -57,54 +57,23 @@ def main():
     )
     position_df = league_df[league_df[position_column] == player_position]
     plot_scatter(position_df, data_point_id='player_id', selected_id=player_id, x_metric=x_axis, y_metric=y_axis)
-    # # -----------------------
-    #
-    # players_df = get_team_players(competition_id=selection_dict['competition']['id'], season_id=selection_dict['season']['id'], team_id=team_id)
-    # players_list = players_df.short_name.unique()
-    # selected_player = st.selectbox('Select player', players_list, index=0, key='player-select')
-    #
-    # player_id = players_df.query(f'short_name=="{selected_player}"').squeeze().id
-    #
-    # plot_metrics = {
-    #     'meters_per_minute_tip': 'Meters Per Minute TIP',
-    #     'meters_per_minute_otip': 'Meters Per Minute OTIP',
-    #     'highaccel_count_per_60_bip': 'Number Of High Accels Per 60 BIP',
-    #     'highdecel_count_per_60_bip': 'Number Of High Decels Per 60 BIP',
-    #     'sprint_count_per_60_bip': 'Number Sprints Per 60 BIP',
-    #     'psv99': 'Peak Sprint Velocity 99th Percentile'
-    # }
-    # player_position = league_df.query(f'player_id=={player_id}').squeeze().position_group
- # -----------------------
+    # -----------------------
 
-    # players_df = get_team_players(competition_id=selection_dict['competition']['id'], season_id=selection_dict['season']['id'], team_id=team_id)
-    # players_list = players_df.short_name.unique()
-    # selected_player = st.selectbox('Select player', players_list, index=0, key='player-select')
-    #
-    # player_id = players_df.query(f'short_name=="{selected_player}"').squeeze().id
-    #
-    # plot_metrics = {
-    #     'meters_per_minute_tip': 'Meters Per Minute TIP',
-    #     'meters_per_minute_otip': 'Meters Per Minute OTIP',
-    #     'highaccel_count_per_60_bip': 'Number Of High Accels Per 60 BIP',
-    #     'highdecel_count_per_60_bip': 'Number Of High Decels Per 60 BIP',
-    #     'sprint_count_per_60_bip': 'Number Sprints Per 60 BIP',
-    #     'psv99': 'Peak Sprint Velocity 99th Percentile'
-    # }
-    # player_position = league_df.query(f'player_id=={player_id}').squeeze().position_group
-    # if len(player_position) < 1:
-    #     st.warning('Player does not have enough matches for radar plot.')
-    # else:
-    #     position_physical_df = league_df[league_df.position_group == player_position]
-    #     plot_radar(
-    #         position_physical_df,
-    #         f'Running Profile | {selected_player}',
-    #         player_id,
-    #         metrics=[key for key in plot_metrics.keys()],
-    #         metrics_labels=plot_metrics,
-    #         position_label=player_position,
-    #         competition_label=selection_dict['competition']['selected'],
-    #         season_label=selection_dict['season']['selected']
-    #     )
+    radar_options = st.multiselect(
+        'Select radar attributes', metric_values, default=list(metric_values)[:8],
+        max_selections=10,
+        format_func=format_select_labels, key='radar-multiselect'
+    )
+    plot_radar(
+        position_df,
+        f'Running Profile | {selected_player}',
+        player_id,
+        metrics=radar_options,
+        position_label=player_position,
+        competition_label=selection_dict['competition']['selected'],
+        season_label=selection_dict['season']['selected']
+    )
+
 
 if __name__ == "__main__":
     add_page_logo()
