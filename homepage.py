@@ -1,8 +1,5 @@
 import streamlit as st
-from helpers.api import get_teams, get_team_players
-from helpers.helpers import find_element_position
-from helpers.plotting import plot_ranking_table, plot_scatter, plot_radar
-from helpers.utils import authenticate, sidebar_selections, add_page_logo, add_sidebar_logo
+from helpers.utils import authenticate, add_page_logo, add_sidebar_logo
 
 
 def main():
