@@ -1,7 +1,7 @@
 import streamlit as st
 from helpers.api import get_teams, get_team_players
 from helpers.helpers import find_element_position
-from helpers.plotting import plot_scatter, plot_radar
+from helpers.plotting import plot_scatter, plot_radar, plot_violin
 from helpers.utils import authenticate, sidebar_selections, add_page_logo, add_sidebar_logo, filter_by_suffix, \
     format_select_labels
 from settings import METRIC_LABELS
@@ -72,6 +72,16 @@ def main():
         position_label=player_position,
         competition_label=selection_dict['competition']['selected'],
         season_label=selection_dict['season']['selected']
+    )
+
+    violin_x_axis = st.selectbox(
+        'Select X-axis', options=metric_values, index=find_element_position(list(metric_values), x_axis),
+        format_func=format_select_labels, key='violin-axis-select'
+    )
+
+    plot_violin(
+        position_df, data_point_id='player_id', x_metric=violin_x_axis, y_metric=position_column,
+        highlight_list=[player_id]
     )
 
 
