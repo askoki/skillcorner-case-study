@@ -6,55 +6,18 @@ from helpers.utils import authenticate, sidebar_selections, add_page_logo, add_s
 
 
 def main():
-    st.title('CSV Data Viewer')
-    league_df, selection_dict = sidebar_selections()
+    st.title('Task description')
+    st.subheader('Streamlit Task (Code)')
+    st.markdown(
+        '- Adapt the streamlit code to not only upload from a CSV but integrate and retrieve data from the skillcorner API. You can hardcode or make parameters dynamic. The process should be able to extract the data for the 6 competitions you have available. We recommend trying to extract data from at least 2 endpoints (off_ball_runs and physical)')
+    st.markdown(
+        '- Adapt the streamlit code (below) to use the skillcornerviz library. You can find documentation of the library here')
+    st.markdown(
+        '- Create an interface to extract insights - feel free to recommend what insights you’d use for a given analysis. You can outline a use case and adapt the tool. Examples could be scouting a player in a set of leagues in a given competition, or enabling the user to create a set of charts to profile players.')
+    st.markdown('- Deploy the application (on streamlit) and add some level of security')
 
-    psv99_top10_df = league_df.sort_values('psv99', ascending=False).iloc[:10]
-    psv99_top10_df['plot_label'] = psv99_top10_df['player_short_name'] + ' | ' + psv99_top10_df['position_group']
-
-    plot_ranking_table(psv99_top10_df)
-    # ------------------------------
-    teams_df = get_teams(competition_id=selection_dict['competition']['id'], season_id=selection_dict['season']['id'])
-    teams_list = teams_df.name.unique()
-    selected_team = st.selectbox('Select team', teams_list, index=0, key='team-select')
-    team_id = teams_df.query(f'name=="{selected_team}"').squeeze().id
-
-    x_axis = st.selectbox("Select X-axis", options=selection_dict['metrics'],
-                          index=find_element_position(selection_dict['metrics'], 'total_distance_per_90'))
-    y_axis = st.selectbox("Select Y-axis", options=selection_dict['metrics'], index=find_element_position(selection_dict['metrics'], 'hi_distance_per_90'))
-    plot_scatter(league_df, team_name=selected_team, x_metric=x_axis, y_metric=y_axis)
-    # -----------------------
-
-    players_df = get_team_players(competition_id=selection_dict['competition']['id'], season_id=selection_dict['season']['id'], team_id=team_id)
-    players_list = players_df.short_name.unique()
-    selected_player = st.selectbox('Select player', players_list, index=0, key='player-select')
-
-    player_id = players_df.query(f'short_name=="{selected_player}"').squeeze().id
-
-    plot_metrics = {
-        'meters_per_minute_tip': 'Meters Per Minute TIP',
-        'meters_per_minute_otip': 'Meters Per Minute OTIP',
-        'highaccel_count_per_60_bip': 'Number Of High Accels Per 60 BIP',
-        'highdecel_count_per_60_bip': 'Number Of High Decels Per 60 BIP',
-        'sprint_count_per_60_bip': 'Number Sprints Per 60 BIP',
-        'psv99': 'Peak Sprint Velocity 99th Percentile'
-    }
-    player_position = league_df.query(f'player_id=={player_id}').squeeze().position_group
-    if len(player_position) < 1:
-        st.warning('Player does not have enough matches for radar plot.')
-    else:
-        position_physical_df = league_df[league_df.position_group == player_position]
-        plot_radar(
-            position_physical_df,
-            f'Running Profile | {selected_player}',
-            player_id,
-            metrics=[key for key in plot_metrics.keys()],
-            metrics_labels=plot_metrics,
-            position_label=player_position,
-            competition_label=selection_dict['competition']['selected'],
-            season_label=selection_dict['season']['selected']
-        )
-
+    st.subheader('Solution')
+    st.markdown('Deployed Streamlit app with basic authentication system and two subpages. One for **team analysis** and exploring your team against the others in the league. The other is for inspecting **individual player** performance and can be used for scouting and assessment.')
 
 if __name__ == "__main__":
     add_page_logo()

@@ -1,10 +1,8 @@
-from typing import Tuple
-
 import pandas as pd
 import streamlit as st
 from PIL import Image
+from typing import Tuple
 from streamlit_authenticator import Authenticate
-
 from helpers.api import get_competitions, get_seasons, get_league_physical, get_league_off_ball_runs
 
 
@@ -105,6 +103,7 @@ def sidebar_selections() -> Tuple[pd.DataFrame, dict]:
 def filter_by_suffix(items: list, suffix: str) -> list:
     series = pd.Series(items)
     return series[series.str.endswith(suffix)].tolist()
+
 
 def format_select_labels(r):
     return r.replace('_', ' ').capitalize()
