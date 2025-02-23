@@ -13,7 +13,6 @@ def plot_ranking_table(df: pd.DataFrame, metric: str):
         df=df,
         metric=metric,
         label=format_select_labels(metric),
-        # unit='km/h',
         primary_highlight_group=df.iloc[:3].player_id.values,
         add_bar_values=True,
         data_point_id='player_id',
@@ -29,8 +28,6 @@ def plot_scatter(df: pd.DataFrame, data_point_id: str, selected_id: int, x_metri
         y_metric=y_metric,
         data_point_id=data_point_id,
         data_point_label='player_name',
-        # x_unit='m',
-        # y_unit='m',
         x_label=format_select_labels(x_metric),
         y_label=format_select_labels(y_metric),
         primary_highlight_group=[selected_id]
