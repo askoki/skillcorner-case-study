@@ -6,11 +6,11 @@ from skillcornerviz.standard_plots import radar_plot as radar
 from skillcornerviz.standard_plots import bar_plot as bar
 
 
-def plot_spv99_table(df: pd.DataFrame):
+def plot_ranking_table(df: pd.DataFrame, metric: str):
     fig, ax = bar.plot_bar_chart(df=df,
-                                 metric='psv99',
-                                 label='Peak Sprint Velocity 99th Percentile',
-                                 unit='km/h',
+                                 metric=metric,
+                                 label=metric,
+                                 # unit='km/h',
                                  primary_highlight_group=df.iloc[:3].player_id.values,
                                  add_bar_values=True,
                                  data_point_id='player_id',
