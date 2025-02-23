@@ -1,7 +1,7 @@
 import streamlit as st
 from helpers.api import get_teams, get_team_players
 from helpers.helpers import find_element_position
-from helpers.plotting import plot_spv99_table, plot_distance_scatter, plot_radar
+from helpers.plotting import plot_ranking_table, plot_distance_scatter, plot_radar
 from helpers.utils import authenticate, sidebar_selections, add_page_logo, add_sidebar_logo
 
 
@@ -12,7 +12,7 @@ def main():
     psv99_top10_df = league_df.sort_values('psv99', ascending=False).iloc[:10]
     psv99_top10_df['plot_label'] = psv99_top10_df['player_short_name'] + ' | ' + psv99_top10_df['position_group']
 
-    plot_spv99_table(psv99_top10_df)
+    plot_ranking_table(psv99_top10_df)
     # ------------------------------
     teams_df = get_teams(competition_id=selection_dict['competition']['id'], season_id=selection_dict['season']['id'])
     teams_list = teams_df.name.unique()
