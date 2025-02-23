@@ -1,7 +1,7 @@
 import streamlit as st
 from helpers.api import get_teams, get_team_players
 from helpers.helpers import find_element_position
-from helpers.plotting import plot_ranking_table, plot_distance_scatter, plot_radar
+from helpers.plotting import plot_ranking_table, plot_scatter, plot_radar
 from helpers.utils import authenticate, sidebar_selections, add_page_logo, add_sidebar_logo
 
 
@@ -22,7 +22,7 @@ def main():
     x_axis = st.selectbox("Select X-axis", options=selection_dict['metrics'],
                           index=find_element_position(selection_dict['metrics'], 'total_distance_per_90'))
     y_axis = st.selectbox("Select Y-axis", options=selection_dict['metrics'], index=find_element_position(selection_dict['metrics'], 'hi_distance_per_90'))
-    plot_distance_scatter(league_df, team_name=selected_team, x_metric=x_axis, y_metric=y_axis)
+    plot_scatter(league_df, team_name=selected_team, x_metric=x_axis, y_metric=y_axis)
     # -----------------------
 
     players_df = get_team_players(competition_id=selection_dict['competition']['id'], season_id=selection_dict['season']['id'], team_id=team_id)

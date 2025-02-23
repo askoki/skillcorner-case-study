@@ -1,8 +1,9 @@
 import streamlit as st
-from helpers.api import get_teams, get_team_players
+from helpers.api import get_teams
 from helpers.helpers import find_element_position
-from helpers.plotting import plot_ranking_table, plot_distance_scatter
-from helpers.utils import authenticate, sidebar_selections, add_page_logo, add_sidebar_logo, filter_by_suffix
+from helpers.plotting import plot_ranking_table, plot_scatter
+from helpers.utils import authenticate, sidebar_selections, add_page_logo, add_sidebar_logo, filter_by_suffix, \
+    format_select_labels
 from settings import METRIC_LABELS
 
 
@@ -26,7 +27,7 @@ def main():
         metric_values = selection_dict['metrics']
     select_metric = st.selectbox(
         'Select metric', metric_values, index=0,
-        format_func=lambda r: r.replace('_', ' ').capitalize(), key='metric-select'
+        format_func=format_select_labels, key='metric-select'
     )
 
     top10_df = league_df.sort_values(select_metric, ascending=False).iloc[:10]
@@ -36,11 +37,15 @@ def main():
         top10_df['plot_label'] = top10_df.player_name
     plot_ranking_table(top10_df, metric=select_metric)
     # ---------------------
-
-    # x_axis = st.selectbox("Select X-axis", options=selection_dict['metrics'],
-    #                       index=find_element_position(selection_dict['metrics'], 'total_distance_per_90'))
-    # y_axis = st.selectbox("Select Y-axis", options=selection_dict['metrics'], index=find_element_position(selection_dict['metrics'], 'hi_distance_per_90'))
-    # plot_distance_scatter(league_df, team_name=selected_team, x_metric=x_axis, y_metric=y_axis)
+    x_axis = st.selectbox(
+        'Select X-axis', options=metric_values, index=find_element_position(list(metric_values), select_metric),
+        format_func=format_select_labels, key='x-axis-select'
+    )
+    y_axis = st.selectbox(
+        'Select Y-axis', options=metric_values, index=find_element_position(list(metric_values), select_metric)+1,
+        format_func=format_select_labels, key='y-axis-select'
+    )
+    plot_scatter(league_df, team_name=selected_team, x_metric=x_axis, y_metric=y_axis)
     # # -----------------------
     #
     # players_df = get_team_players(competition_id=selection_dict['competition']['id'], season_id=selection_dict['season']['id'], team_id=team_id)
