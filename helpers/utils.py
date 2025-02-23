@@ -45,6 +45,7 @@ def add_page_logo():
         page_icon=img
     )
 
+
 def add_sidebar_logo():
     img = Image.open('skillcorner.png')
     st.markdown(
@@ -78,14 +79,16 @@ def sidebar_selections() -> Tuple[pd.DataFrame, dict]:
 
         season_id = seasons_df.query(f'season_name == \"{selected_season}\"').squeeze().season_id
 
-        selected_data_source = st.selectbox('Select data source', ['Physical', 'Off ball runs'], index=0,
+        selected_data_source = st.selectbox('Select data source', ['Physical', 'Off ball runs'], index=1,
                                             key='data-source-select')
-
+    is_physical = False
     if selected_data_source == 'Physical':
         df, metrics = get_league_physical(competition_id=comp_id, season_id=season_id)
+        is_physical = True
     else:
         df, metrics = get_league_off_ball_runs(competition_id=comp_id, season_id=season_id)
     return_dict = {
+        'is_physical': is_physical,
         'metrics': metrics,
         'competition': {
             'selected': selected_competition,
@@ -97,3 +100,8 @@ def sidebar_selections() -> Tuple[pd.DataFrame, dict]:
         }
     }
     return df, return_dict
+
+
+def filter_by_suffix(items: list, suffix: str) -> list:
+    series = pd.Series(items)
+    return series[series.str.endswith(suffix)].tolist()
