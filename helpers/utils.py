@@ -77,8 +77,9 @@ def sidebar_selections() -> Tuple[pd.DataFrame, dict]:
 
         season_id = seasons_df.query(f'season_name == \"{selected_season}\"').squeeze().season_id
 
-        selected_data_source = st.selectbox('Select data source', ['Physical', 'Off ball runs'], index=1,
-                                            key='data-source-select')
+        selected_data_source = st.selectbox(
+            'Select data source', ['Physical', 'Off ball runs'], index=0, key='data-source-select'
+        )
     is_physical = False
     if selected_data_source == 'Physical':
         df, metrics = get_league_physical(competition_id=comp_id, season_id=season_id)
