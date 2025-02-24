@@ -10,7 +10,9 @@ from settings import METRIC_LABELS
 def main():
     st.title('Player analysis')
     league_df, selection_dict = sidebar_selections()
-
+    if league_df.empty:
+        st.warning('No data found')
+        return
     # ------------------------------
     teams_df = get_teams(competition_id=selection_dict['competition']['id'], season_id=selection_dict['season']['id'])
     teams_list = teams_df.name.unique()

@@ -83,6 +83,8 @@ def get_league_physical(competition_id: int, season_id: int) -> Tuple[pd.DataFra
         'data_version': '3'
     })
     df = pd.DataFrame(data)
+    if df.empty:
+        return pd.DataFrame(), []
     metrics = p_utils.add_standard_metrics(df)
     return df, metrics
 
@@ -101,6 +103,8 @@ def get_league_off_ball_runs(competition_id: int, season_id: int) -> Tuple[pd.Da
                     'pulling_half_space_run,cross_receiver_run'
     })
     df = pd.DataFrame(data)
+    if df.empty:
+        return pd.DataFrame(), []
     # metrics is empty in this case, workaround with RUNS dict
     metrics = gi_utils.add_run_normalisations(df)
     return df, RUNS.keys()
